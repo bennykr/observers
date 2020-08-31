@@ -9,8 +9,6 @@
 #define OBSERVERS_EVENT_HANDLE_HPP_
 
 #include <memory>
-
-// TODO: temp
 #include <string>
 
 namespace observers {
@@ -23,7 +21,8 @@ private:
     struct AbstractHandle {
         virtual ~AbstractHandle() = default;
 
-        virtual void test_event(std::string const & message) const = 0;
+        // TODO: replace with user defined events
+        virtual void notify(std::string const & message) const = 0;
     };
 
     template <typename TObserver>
@@ -33,10 +32,11 @@ private:
         HandleImplementation(TObserver & observer_) : observer(observer_){}
         virtual ~HandleImplementation() = default;
 
-
-        virtual void test_event(std::string const & message) const {
-        	observer.template test_event<TSubject>(message);
+        // TODO: replace with user defined events
+        virtual void notify(std::string const & message) const override {
+        	observer.template notify<TSubject>(message);
         }
+
     };
 
     std::unique_ptr<AbstractHandle> impl;
@@ -50,8 +50,8 @@ public:
     	static_assert(TObserver::template observes_subject<TSubject>());
     }
 
-    void test_event(std::string const & message) const {
-        impl->test_event(message);
+    void notify(std::string const & message) const {
+        impl->notify(message);
     }
 
 };

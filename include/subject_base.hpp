@@ -13,8 +13,6 @@
 
 #include <memory>
 
-#define assert_with_message(exp, msg) assert(((void)msg, exp))
-
 namespace observers {
 
 template <typename TDerived>
@@ -33,48 +31,50 @@ public:
     SubjectBase(SubjectBase const &) = delete;
     SubjectBase & operator=(SubjectBase const &) = delete;
 
-    // Called directly only on program exit. Called indirectly after `delete_instance`.
+    friend std::unique_ptr<TDerived> std::make_unique<TDerived>();
+    static void create(){
+        assert_with_message(instance == nullptr, "Subject already exists");
+        instance = std::make_unique<TDerived>();
+    }
+
     virtual ~SubjectBase() = default;
 
+    static void assert_existance(){
+        assert_with_message(instance != nullptr, "Subject was not created, or deleted");
+    };
+
     static void delete_instance(){
-        assert(instance != nullptr);
+        assert_existance();
 
         if (0 != get_events().number_of_attached_handles()){
         	assert_with_message(false, "Subject instance cannot be deleted as "
-        				               "there are observers attached to it.");
+        				               "there are observers attached to it");
         }
         instance.reset(nullptr);
     }
 
-    static TDerived & get_instance(){
-        assert(instance != nullptr);
+    [[nodiscard]] static TDerived & get_instance() {
+        assert_existance();
         return *instance;
     }
 
-    static SubjectEvents<TDerived> & get_events(){
-        assert(instance != nullptr);
+    [[nodiscard]] static SubjectEvents<TDerived> & get_events(){
+        assert_existance();
         return instance->events;
     }
 
-    static bool exists(){return !(instance == nullptr);}
+    [[nodiscard]] static bool exists(){return !(instance == nullptr);}
 
     template <template <typename T> class TEventHandle>
     static void attach_event_handle(TEventHandle<TDerived> & event_handle){
-        assert(instance != nullptr);
+        assert_existance();
         instance->events.attach_event_handle(event_handle);
     }
 
     template <template <typename T> class TEventHandle>
     static void detach_event_handle(TEventHandle<TDerived> & event_handle){
-        assert(instance != nullptr);
+        assert_existance();
         instance->events.detach_event_handle(event_handle);
-    }
-
-
-    friend std::unique_ptr<TDerived> std::make_unique<TDerived>();
-    static void create(size_t const size = 0){
-        assert(instance == nullptr);
-        instance = std::make_unique<TDerived>();
     }
 
 };

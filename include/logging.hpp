@@ -10,11 +10,15 @@
 
 #include <string>
 #include <cassert>
+#include <iostream>
 
 namespace observers {
 
-void assert_with_message(bool condition, std::string const & message){
-    assert( ((void) message, condition) );
+inline void assert_with_message(bool condition, std::string const & message){
+    if (!condition){
+        std::cerr << message << std::endl;
+        std::abort();
+    }
 }
 
 } // namespace observers

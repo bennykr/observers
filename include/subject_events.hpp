@@ -12,9 +12,6 @@
 #include "event_handle.hpp"
 
 #include <set>
-
-// TODO: temp
-#include <iostream>
 #include <string>
 
 namespace observers {
@@ -58,12 +55,10 @@ public:
     	return attached_event_handles.size();
     }
 
-    // TODO: temp
-    void test_event(std::string const & message){
+    void notify(std::string const & message){
 		for(EventHandle<TSubject> * event_handle : attached_event_handles){
-			event_handle->test_event(message);
+			event_handle->notify(message);
 		}
-        std::cout << "SubjectEvents: " << message << std::endl;
     }
 
 };
