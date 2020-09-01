@@ -46,24 +46,25 @@ public:
     static void delete_instance(){
         assert_existance();
 
-        if (0 != get_events().number_of_attached_handles()){
+        if (0 != number_of_attached_observers()){
             assert_with_message(false, "Subject instance cannot be deleted as "
                                        "there are observers attached to it");
         }
         instance.reset(nullptr);
     }
 
-    [[nodiscard]] static TDerived & get_instance() {
-        assert_existance();
-        return *instance;
-    }
-
-    [[nodiscard]] static SubjectEvents<TDerived> & get_events(){
-        assert_existance();
-        return instance->events;
-    }
-
     [[nodiscard]] static bool exists(){return !(instance == nullptr);}
+
+    [[nodiscard]] static size_t number_of_attached_observers() {
+        assert_existance();
+        return instance->events.number_of_attached_handles();
+    }
+
+    static void notify(std::string const & message){
+        assert_existance();
+        return instance->events.notify(message);
+    }
+
 
     template <template <typename T> class TEventHandle>
     static void attach_event_handle(TEventHandle<TDerived> & event_handle){
@@ -76,7 +77,6 @@ public:
         assert_existance();
         instance->events.detach_event_handle(event_handle);
     }
-
 };
 
 // Initialization of the static instance pointer

@@ -47,8 +47,6 @@ private:
         attached_event_handles.erase(&event_handle);
     }
 
-public:
-
     // Used to make sure TSubject can safely be deleted.
     // Also used for tests.
     size_t number_of_attached_handles() const {
@@ -60,7 +58,6 @@ public:
 			event_handle->notify(message);
 		}
     }
-
 };
 
 } // namespace observers

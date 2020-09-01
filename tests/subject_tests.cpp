@@ -10,7 +10,7 @@ public:
 
 TEST(Subject, Nonexisting) {
     ASSERT_FALSE(Subject::exists());
-    ASSERT_DEATH((void) Subject::get_instance(), "not created");
+    ASSERT_DEATH((void) Subject::number_of_attached_observers(), "not created");
 }
 
 TEST(Subject, Create) {
