@@ -26,10 +26,10 @@ class SubjectBase;
 template <typename TSubject>
 class SubjectEvents{
 private:
-	// Observers are attached (detached) in EventHandlesContainer
-	// using `SubjectBase::attach_event_handle(event_handle)`, which 
+    // Observers are attached (detached) in EventHandlesContainer
+    // using `SubjectBase::attach_event_handle(event_handle)`, which 
     // refers the attachment (detachment) operation to its `events` object.
-	// For this purpose it needs to be a friend of the 'SubjectEvents' class.
+    // For this purpose it needs to be a friend of the 'SubjectEvents' class.
 	template <typename TDerived>
     friend class SubjectBase;
 
