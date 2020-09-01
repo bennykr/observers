@@ -8,6 +8,7 @@
 #ifndef OBSERVERS_OBSERVER_BASE_HPP_
 #define OBSERVERS_OBSERVER_BASE_HPP_
 
+#include "logging.hpp"
 #include "event_handles_container.hpp"
 #include "utils.hpp"
 
@@ -54,7 +55,7 @@ protected:
 public:
 
     void attach_to_events(){
-    	assert(nullptr == event_handles);
+    	assert_with_message(nullptr == event_handles, "Observer already attached");
     	event_handles = std::make_unique<EventHandles>(*static_cast<TDerived*>(this));
     }
 
