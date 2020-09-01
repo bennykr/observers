@@ -27,14 +27,14 @@ private:
 
     template <typename TObserver>
     struct HandleImplementation : public AbstractHandle {
-    	TObserver & observer;
+        TObserver & observer;
 
         HandleImplementation(TObserver & observer_) : observer(observer_){}
         virtual ~HandleImplementation() = default;
 
         // TODO: replace with user defined events
         virtual void notify(std::string const & message) const override {
-        	observer.template notify<TSubject>(message);
+            observer.template notify<TSubject>(message);
         }
 
     };
@@ -45,9 +45,9 @@ public:
 
     template <typename TObserver>
     explicit EventHandle(TObserver & observer)
-	: impl(std::make_unique<HandleImplementation<TObserver> >(observer)){
-    	// Make sure the TObserver observes 'TSubject'
-    	static_assert(TObserver::template observes_subject<TSubject>());
+    : impl(std::make_unique<HandleImplementation<TObserver> >(observer)){
+        // Make sure the TObserver observes 'TSubject'
+        static_assert(TObserver::template observes_subject<TSubject>());
     }
 
     void notify(std::string const & message) const {

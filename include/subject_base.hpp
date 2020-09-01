@@ -19,7 +19,7 @@ template <typename TDerived>
 class SubjectBase {
 
 protected:
-	static std::unique_ptr<TDerived> instance;
+    static std::unique_ptr<TDerived> instance;
 
     SubjectEvents<TDerived> events;
 
@@ -47,8 +47,8 @@ public:
         assert_existance();
 
         if (0 != get_events().number_of_attached_handles()){
-        	assert_with_message(false, "Subject instance cannot be deleted as "
-        				               "there are observers attached to it");
+            assert_with_message(false, "Subject instance cannot be deleted as "
+                                       "there are observers attached to it");
         }
         instance.reset(nullptr);
     }

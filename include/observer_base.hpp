@@ -34,20 +34,20 @@ protected:
 
     ObserverBase(ObserverBase && other)
     : event_handles(nullptr){
-    	if (other.is_attached()){
-    		other.detach_from_events();
+        if (other.is_attached()){
+            other.detach_from_events();
             attach_to_events();
-    	}
+        }
     }
 
 
     void operator=(ObserverBase && other){
-    	event_handles.reset(nullptr);
+        event_handles.reset(nullptr);
 
-    	if (other.is_attached()){
-    		other.detach_from_events();
+        if (other.is_attached()){
+            other.detach_from_events();
             attach_to_events();
-    	}
+        }
     }
 
     virtual ~ObserverBase() = default;
@@ -55,12 +55,12 @@ protected:
 public:
 
     void attach_to_events(){
-    	assert_with_message(nullptr == event_handles, "Observer already attached");
-    	event_handles = std::make_unique<EventHandles>(*static_cast<TDerived*>(this));
+        assert_with_message(nullptr == event_handles, "Observer already attached");
+        event_handles = std::make_unique<EventHandles>(*static_cast<TDerived*>(this));
     }
 
     void detach_from_events(){
-    	event_handles.reset(nullptr);
+        event_handles.reset(nullptr);
     }
 
     bool is_attached() const {return event_handles != nullptr;}

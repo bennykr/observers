@@ -10,8 +10,8 @@
 
 namespace observers::utils {
 
-	template<typename T, typename... Ts>
-	constexpr bool is_type_in_list(){
+    template<typename T, typename... Ts>
+    constexpr bool is_type_in_list(){
         return (... || std::is_same_v<T, Ts>);
     }
 
