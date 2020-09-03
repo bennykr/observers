@@ -25,6 +25,11 @@ protected:
 
     SubjectBase() = default;
 
+private:
+    static void assert_existance(){
+        assert_with_message(instance != nullptr, "Subject was not created, or deleted");
+    };
+
 public:
     
     // Subject cannot be created by means other than calling 'create' for TDerived
@@ -38,10 +43,6 @@ public:
     }
 
     virtual ~SubjectBase() = default;
-
-    static void assert_existance(){
-        assert_with_message(instance != nullptr, "Subject was not created, or deleted");
-    };
 
     static void delete_instance(){
         assert_existance();

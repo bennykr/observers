@@ -8,6 +8,7 @@
 #ifndef OBSERVERS_EVENT_HANDLES_CONTAINER_HPP_
 #define OBSERVERS_EVENT_HANDLES_CONTAINER_HPP_
 
+#include "event_handle.hpp"
 #include "utils.hpp"
 
 namespace observers {
@@ -17,7 +18,7 @@ class EventHandlesContainer;
 
 template <typename TSubject, typename... TNextSubjects>
 class EventHandlesContainer<TSubject, TNextSubjects...>{
-    static_assert(!utils::is_type_in_list<TSubject, TNextSubjects...>(),
+    static_assert(utils::unique_list<TSubject, TNextSubjects...>(),
                   "Duplicate subjects in arguments pack");
 
 public:

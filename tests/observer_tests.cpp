@@ -4,18 +4,33 @@
 
 using namespace observers;
 
-class SubjectA : public SubjectBase<SubjectA>{};
+namespace observer_tests {
+    class SubjectA : public SubjectBase<SubjectA>{};
 
-class SubjectB : public SubjectBase<SubjectB>{};
+    class SubjectB : public SubjectBase<SubjectB>{};
 
-struct ObserverA : public ObserverBase<ObserverA, SubjectA>{
-    template <typename> void notify(std::string const &) const {}
-};
+    struct ObserverA : public ObserverBase<ObserverA, SubjectA>{
+        template <typename> void notify(std::string const &) {}
+    };
 
-struct ObserverAB : public ObserverBase<ObserverAB, SubjectA, SubjectB>{
-    template <typename> void notify(std::string const &) const {}
-};
+    struct ObserverAB : public ObserverBase<ObserverAB, SubjectA, SubjectB>{
+        template <typename> void notify(std::string const &) {}
+    };
 
+    class ObserverWithSubjects : public ::testing::Test {
+    protected:
+        virtual void SetUp() {
+            SubjectA::create();
+            SubjectB::create();
+        }
+
+        virtual void TearDown() {
+            SubjectA::delete_instance();
+            SubjectB::delete_instance();
+        }
+    };
+} // namespace observer_tests
+using namespace observer_tests;
 
 TEST(Observer, ObservedSubjects){
     EXPECT_TRUE(ObserverA::observes_subject<SubjectA>());
@@ -31,19 +46,6 @@ TEST(Observer, CreateWithNonexistingSubject) {
     ASSERT_FALSE(SubjectA::exists());
 	ASSERT_DEATH(ObserverA(), "Subject was not created");
 }
-
-class ObserverWithSubjects : public ::testing::Test {
-protected:
-	virtual void SetUp() {
-		SubjectA::create();
-        SubjectB::create();
-	}
-
-	virtual void TearDown() {
-		SubjectA::delete_instance();
-        SubjectB::delete_instance();
-	}
-};
 
 TEST_F(ObserverWithSubjects, CreateAttached) {
     ASSERT_EQ(SubjectA::number_of_attached_observers(), 0u);

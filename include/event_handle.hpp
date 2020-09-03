@@ -22,7 +22,7 @@ private:
         virtual ~AbstractHandle() = default;
 
         // TODO: replace with user defined events
-        virtual void notify(std::string const & message) const = 0;
+        virtual void notify(std::string const & message) = 0;
     };
 
     template <typename TObserver>
@@ -33,7 +33,7 @@ private:
         virtual ~HandleImplementation() = default;
 
         // TODO: replace with user defined events
-        virtual void notify(std::string const & message) const override {
+        virtual void notify(std::string const & message) override {
             observer.template notify<TSubject>(message);
         }
 
@@ -50,7 +50,7 @@ public:
         static_assert(TObserver::template observes_subject<TSubject>());
     }
 
-    void notify(std::string const & message) const {
+    void notify(std::string const & message) {
         impl->notify(message);
     }
 

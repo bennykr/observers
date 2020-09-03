@@ -2,8 +2,6 @@
 #include "subject_base.hpp"
 #include "observer_base.hpp"
 
-#include <string>
-
 using namespace observers;
 
 int main(int argc, char **argv) {

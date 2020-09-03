@@ -3,10 +3,13 @@
 
 using namespace observers;
 
-class Subject : public SubjectBase<Subject>{
-public:
-    static auto constexpr name = "Subject";
-};
+namespace subject_tests {
+    class Subject : public SubjectBase<Subject>{
+    public:
+        static auto constexpr name = "Subject";
+    };
+} // namespace subject_tests
+using namespace subject_tests;
 
 TEST(Subject, Nonexisting) {
     ASSERT_FALSE(Subject::exists());
